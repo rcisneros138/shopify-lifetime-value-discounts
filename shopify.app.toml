@@ -1,0 +1,67 @@
+# This file stores configurations for your Shopify app.
+
+name = "Lifetime Discounts"
+
+# The client ID is your app's public identifier
+# Find this in Partner Dashboard > Apps > [Your App] > Overview > Client credentials
+client_id = "3dafe45c087f97c9fe55d2f415d91d74"
+
+# Shopify API scopes required by the app
+scopes = "read_customers,write_customers,read_orders,write_discounts,read_discounts,write_price_rules,read_price_rules"
+
+# App proxy configuration for storefront integration
+[app_proxy]
+# [HOST] should be replaced with your app's URL:
+# - For local dev: Shopify CLI provides this automatically (e.g., https://abc123.ngrok.io)
+# - For production: Your deployed app URL (e.g., https://my-app.herokuapp.com)
+url = "https://[HOST]/apps/lifetime-discounts"
+subpath = "lifetime-discounts"
+prefix = "apps"
+
+# Authentication redirect URLs
+[auth]
+# [HOST] should be replaced with your app's URL (same as above)
+redirect_urls = [
+  "https://[HOST]/auth/callback",
+  "https://[HOST]/auth/shopify/callback",
+  "https://[HOST]/api/auth/callback",
+]
+
+# Webhook subscriptions
+[webhooks]
+api_version = "2024-01"
+
+[[webhooks.subscriptions]]
+topics = ["orders/paid"]
+uri = "/webhooks/orders/paid"
+
+[[webhooks.subscriptions]]
+topics = ["customers/update"]
+uri = "/webhooks/customers/update"
+
+# Point of Sale settings
+[pos]
+embedded = false
+
+# Build and development settings
+[build]
+# Set to true for development to automatically update URLs when using Shopify CLI tunnel
+# Set to false for production apps
+automatically_update_urls_on_dev = true
+
+# Your development store URL (e.g., "my-dev-store.myshopify.com")
+# Find this in Partner Dashboard > Stores > Development stores
+dev_store_url = ""
+
+# App preferences
+[app_preferences]
+# [HOST] should be replaced with your app's URL (same as above)
+url = "https://[HOST]"
+
+# Access configuration
+[access]
+admin = "MERCHANT_INSTALL"
+
+# Network access for API calls
+[network_access]
+use_internet = true

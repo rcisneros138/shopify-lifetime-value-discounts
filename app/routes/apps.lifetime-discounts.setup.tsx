@@ -1,4 +1,4 @@
-import { json, type ActionFunctionArgs } from "@remix-run/node";
+import { type ActionFunctionArgs } from "@remix-run/node";
 import { Form, useActionData, useNavigation } from "@remix-run/react";
 import { authenticate } from "../shopify.server";
 import { Card, Page, Button, Banner, Text, BlockStack } from "@shopify/polaris";
@@ -52,7 +52,7 @@ export async function action({ request }: ActionFunctionArgs) {
     
     const metafieldData = await metafieldResponse.json();
     if (metafieldData.data?.metafieldDefinitionCreate?.userErrors?.length > 0) {
-      errors.push(...metafieldData.data.metafieldDefinitionCreate.userErrors.map(e => e.message));
+      errors.push(...metafieldData.data.metafieldDefinitionCreate.userErrors.map((e: any) => e.message));
     } else {
       created.metafield = true;
     }
@@ -112,24 +112,24 @@ export async function action({ request }: ActionFunctionArgs) {
       
       const discountData = await discountResponse.json();
       if (discountData.data?.discountAutomaticBasicCreate?.userErrors?.length > 0) {
-        errors.push(...discountData.data.discountAutomaticBasicCreate.userErrors.map(e => `${tier.code}: ${e.message}`));
+        errors.push(...discountData.data.discountAutomaticBasicCreate.userErrors.map((e: any) => `${tier.code}: ${e.message}`));
       } else {
         created.discounts.push(tier.code);
       }
     }
     
-    return json<ActionData>({
+    return Response.json({
       success: errors.length === 0,
       errors,
       created
-    });
+    } satisfies ActionData);
     
   } catch (error) {
     console.error('Setup error:', error);
-    return json<ActionData>({
+    return Response.json({
       success: false,
-      errors: [error.message]
-    });
+      errors: [error instanceof Error ? error.message : 'An unknown error occurred']
+    } satisfies ActionData);
   }
 }
 
@@ -160,7 +160,7 @@ export default function SetupPage() {
             </BlockStack>
             
             <Form method="post">
-              <Button submit primary loading={isSubmitting}>
+              <Button submit variant="primary" loading={isSubmitting}>
                 Run Setup
               </Button>
             </Form>
@@ -168,7 +168,7 @@ export default function SetupPage() {
         </Card>
         
         {actionData?.success && (
-          <Banner status="success">
+          <Banner tone="success">
             <p>Setup completed successfully!</p>
             {actionData.created?.metafield && <p>✓ Metafield definition created</p>}
             {actionData.created?.discounts?.map(code => (
@@ -178,7 +178,7 @@ export default function SetupPage() {
         )}
         
         {actionData?.errors && actionData.errors.length > 0 && (
-          <Banner status="critical">
+          <Banner tone="critical">
             <p>Setup encountered errors:</p>
             {actionData.errors.map((error, i) => (
               <p key={i}>• {error}</p>
