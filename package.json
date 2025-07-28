@@ -1,0 +1,29 @@
+{
+  "name": "shopify-lifetime-value-discounts",
+  "version": "1.0.0",
+  "description": "Dynamic lifetime value-based discounts for Shopify without Plus",
+  "scripts": {
+    "dev": "shopify app dev",
+    "build": "remix build",
+    "start": "remix-serve build",
+    "setup": "npm install && shopify app generate extension"
+  },
+  "dependencies": {
+    "@remix-run/node": "^2.8.0",
+    "@remix-run/react": "^2.8.0",
+    "@remix-run/serve": "^2.8.0",
+    "@shopify/app": "^3.0.0",
+    "@shopify/cli": "^3.0.0",
+    "@shopify/polaris": "^12.0.0",
+    "@shopify/shopify-app-remix": "^2.0.0",
+    "@shopify/shopify-app-session-storage-prisma": "^2.0.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "typescript": "^5.0.0"
+  }
+}
